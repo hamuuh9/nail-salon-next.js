@@ -1,75 +1,293 @@
+'use client'
+
+import { useState, useEffect, useRef } from 'react'
+
 export default function Gallery() {
-  const images = [
-    {
-      src: 'https://via.placeholder.com/600x400/d4a5a5/ffffff?text=Nail+Art+1',
-      alt: 'Nail art design 1',
-    },
-    {
-      src: 'https://via.placeholder.com/600x400/d4a5a5/ffffff?text=Manicure',
-      alt: 'Manicure service',
-    },
-    {
-      src: 'https://via.placeholder.com/600x400/d4a5a5/ffffff?text=Nail+Art+2',
-      alt: 'Nail art design 2',
-    },
-    {
-      src: 'https://via.placeholder.com/600x400/d4a5a5/ffffff?text=Pedicure',
-      alt: 'Pedicure service',
-    },
-    {
-      src: 'https://via.placeholder.com/600x400/d4a5a5/ffffff?text=Gel+Nails',
-      alt: 'Gel nails',
-    },
-    {
-      src: 'https://via.placeholder.com/600x400/d4a5a5/ffffff?text=Spa+Treatment',
-      alt: 'Spa treatment',
-    },
+  const [selectedImage, setSelectedImage] = useState<number | null>(null)
+  const [isVisible, setIsVisible] = useState(false)
+  const sectionRef = useRef<HTMLElement>(null)
+  const [filter, setFilter] = useState('all')
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true)
+        }
+      },
+      { threshold: 0.1 }
+    )
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [])
+
+  const categories = [
+    { id: 'all', label: 'All' },
+    { id: 'manicure', label: 'Manicure' },
+    { id: 'pedicure', label: 'Pedicure' },
+    { id: 'nail-art', label: 'Nail Art' },
+    { id: 'gel', label: 'Gel Nails' },
+    { id: 'extensions', label: 'Extensions' }
   ]
 
+  const images = [
+    {
+      src: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80',
+      alt: 'Beautiful nail art design with floral patterns',
+      category: 'nail-art',
+      title: 'Floral Elegance'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80',
+      alt: 'Professional French manicure',
+      category: 'manicure',
+      title: 'Classic French'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?auto=format&fit=crop&w=800&q=80',
+      alt: 'Colorful gel nail design',
+      category: 'gel',
+      title: 'Gel Perfection'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80',
+      alt: 'Luxury pedicure spa treatment',
+      category: 'pedicure',
+      title: 'Spa Pedicure'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=800&q=80',
+      alt: 'Intricate nail art with gems',
+      category: 'nail-art',
+      title: 'Glamorous Gems'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1604654894610-df63bc536371?auto=format&fit=crop&w=800&q=80&sat=-100',
+      alt: 'Minimalist nail design',
+      category: 'manicure',
+      title: 'Minimalist Chic'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1632345031435-8727f6897d53?auto=format&fit=crop&w=800&q=80&rot=180',
+      alt: 'Ombre nail design',
+      category: 'gel',
+      title: 'Gradient Ombre'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80&flip=h',
+      alt: 'Nail extension art',
+      category: 'extensions',
+      title: 'Long & Elegant'
+    },
+    {
+      src: 'https://images.unsplash.com/photo-1607779097040-26e80aa78e66?auto=format&fit=crop&w=800&q=80&rot=90',
+      alt: 'Seasonal nail art',
+      category: 'nail-art',
+      title: 'Seasonal Beauty'
+    }
+  ]
+
+  const filteredImages = filter === 'all' ? images : images.filter(img => img.category === filter)
+
+  const openLightbox = (index: number) => {
+    setSelectedImage(index)
+    document.body.style.overflow = 'hidden'
+  }
+
+  const closeLightbox = () => {
+    setSelectedImage(null)
+    document.body.style.overflow = 'unset'
+  }
+
+  const navigateLightbox = (direction: 'prev' | 'next') => {
+    if (selectedImage === null) return
+    if (direction === 'prev') {
+      setSelectedImage(selectedImage === 0 ? filteredImages.length - 1 : selectedImage - 1)
+    } else {
+      setSelectedImage(selectedImage === filteredImages.length - 1 ? 0 : selectedImage + 1)
+    }
+  }
+
   return (
-    <section id="gallery" className="section-padding">
-      <div className="container-custom">
-        {/* Section Title */}
-        <div className="text-center mb-16">
-          <span className="text-theme font-medium uppercase tracking-wider text-sm">
-            Make an Impression
-          </span>
-          <h2 className="text-4xl md:text-5xl font-bold mt-4 mb-6">
-            We do not just do nails. We create memories
+    <section id="gallery" ref={sectionRef} className="relative py-24 md:py-32 overflow-hidden">
+      {/* Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-theme-light/30" />
+      
+      <div className="relative container-custom">
+        {/* Section Header */}
+        <div className={`text-center mb-16 transition-all duration-1000 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <div className="inline-flex items-center gap-2 px-4 py-2 bg-theme/10 rounded-full mb-6">
+            <span className="w-2 h-2 bg-theme rounded-full animate-pulse" />
+            <span className="text-theme font-medium text-sm tracking-wider uppercase">
+              Make an Impression
+            </span>
+          </div>
+          <h2 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6">
+            We Do Not Just Do Nails
+            <span className="block text-theme mt-2">We Create Memories</span>
           </h2>
-          <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-            Every nail service we provide is a work of art. From classic manicures to intricate nail designs, we bring your vision to life with precision and care.
+          <p className="text-gray-600 max-w-3xl mx-auto text-lg md:text-xl">
+            Every nail service we provide is a work of art. From classic manicures to intricate nail designs, 
+            we bring your vision to life with precision and creativity.
           </p>
         </div>
 
-        {/* Gallery Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {images.map((image, index) => (
+        {/* Filter Buttons */}
+        <div className={`flex flex-wrap justify-center gap-3 mb-12 transition-all duration-1000 delay-200 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          {categories.map((category) => (
+            <button
+              key={category.id}
+              onClick={() => setFilter(category.id)}
+              className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
+                filter === category.id
+                  ? 'bg-theme text-white shadow-lg shadow-theme/30 scale-105'
+                  : 'bg-white text-gray-600 hover:bg-theme/10 hover:text-theme'
+              }`}
+            >
+              {category.label}
+            </button>
+          ))}
+        </div>
+
+        {/* Gallery Grid - Masonry Style */}
+        <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 transition-all duration-1000 delay-400 ${isVisible ? 'opacity-100' : 'opacity-0'}`}>
+          {filteredImages.map((image, index) => (
             <div
               key={index}
-              className="group relative overflow-hidden rounded-2xl aspect-[3/2]"
+              className="group relative overflow-hidden rounded-2xl cursor-pointer"
+              style={{
+                aspectRatio: index % 3 === 0 ? '4/5' : '3/2',
+                animationDelay: `${index * 100}ms`
+              }}
+              onClick={() => openLightbox(index)}
             >
+              {/* Image */}
               <img
                 src={image.src}
                 alt={image.alt}
-                className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+                className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
               />
-              <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition-all duration-300 flex items-center justify-center">
-                <button className="opacity-0 group-hover:opacity-100 transition-opacity bg-white text-theme px-6 py-3 rounded-lg font-medium hover:bg-theme hover:text-white transition-colors">
-                  View
-                </button>
+              
+              {/* Overlay */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+              
+              {/* Content */}
+              <div className="absolute inset-0 flex flex-col justify-end p-6 transform translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                <div className="transform translate-y-4 group-hover:translate-y-0 transition-all duration-500 delay-100">
+                  <span className="inline-block px-3 py-1 bg-theme text-white text-xs font-medium rounded-full mb-3">
+                    {categories.find(c => c.id === image.category)?.label}
+                  </span>
+                  <h3 className="text-xl font-bold text-white mb-2">{image.title}</h3>
+                </div>
+                
+                <div className="flex gap-3 transform translate-y-8 group-hover:translate-y-0 opacity-0 group-hover:opacity-100 transition-all duration-500 delay-200">
+                  <button className="flex-1 bg-white text-theme py-2 px-4 rounded-lg font-medium hover:bg-theme hover:text-white transition-colors">
+                    View
+                  </button>
+                  <button className="w-10 h-10 bg-white/20 backdrop-blur-sm rounded-lg flex items-center justify-center text-white hover:bg-white/30 transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M10 12a2 2 0 100-4 2 2 0 000 4z" />
+                      <path fillRule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
               </div>
+
+              {/* Decorative Corner */}
+              <div className="absolute top-4 right-4 w-12 h-12 border-t-2 border-r-2 border-white/30 rounded-tr-2xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </div>
           ))}
         </div>
 
-        {/* CTA */}
-        <div className="text-center mt-12">
-          <a href="#gallery" className="btn-primary inline-block">
-            Our Gallery
-          </a>
+        {/* Load More Button */}
+        <div className={`text-center mt-12 transition-all duration-1000 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
+          <button className="group relative px-8 py-4 bg-theme text-white rounded-full font-semibold overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-theme/30">
+            <span className="relative z-10">View Full Gallery</span>
+            <div className="absolute inset-0 bg-theme-hover transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
+          </button>
         </div>
       </div>
+
+      {/* Lightbox */}
+      {selectedImage !== null && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
+          onClick={closeLightbox}
+        >
+          {/* Close Button */}
+          <button 
+            className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors"
+            onClick={closeLightbox}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          {/* Previous Button */}
+          <button 
+            className="absolute left-6 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors"
+            onClick={(e) => { e.stopPropagation(); navigateLightbox('prev'); }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          {/* Next Button */}
+          <button 
+            className="absolute right-6 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors"
+            onClick={(e) => { e.stopPropagation(); navigateLightbox('next'); }}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          {/* Image */}
+          <div 
+            className="relative max-w-6xl w-full max-h-[90vh] animate-fade-in"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={filteredImages[selectedImage].src}
+              alt={filteredImages[selectedImage].alt}
+              className="w-full h-full object-contain rounded-2xl"
+            />
+            
+            {/* Image Info */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent rounded-b-2xl">
+              <div className="flex items-center justify-between text-white">
+                <div>
+                  <h3 className="text-2xl font-bold">{filteredImages[selectedImage].title}</h3>
+                  <p className="text-white/70">{filteredImages[selectedImage].alt}</p>
+                </div>
+                <div className="flex gap-2">
+                  <button className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+                    </svg>
+                  </button>
+                  <button className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            {/* Counter */}
+            <div className="absolute top-6 left-6 px-4 py-2 bg-black/50 backdrop-blur-sm rounded-full text-white text-sm">
+              {selectedImage + 1} / {filteredImages.length}
+            </div>
+          </div>
+        </div>
+      )}
     </section>
   )
 }
