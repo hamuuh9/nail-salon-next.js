@@ -25,21 +25,21 @@ export default function Pricing() {
   }, [])
 
   const pricingLeft = [
-    { name: 'Classic Manicure', price: 19, duration: '25 minutes', icon: '💅', popular: false },
-    { name: 'Spa Manicure', price: 30, duration: '35 minutes', icon: '✨', popular: true },
-    { name: 'Aloe Vera Manicure', price: 48, duration: '45 minutes', icon: '🌿', popular: false },
-    { name: 'Gel Manicure', price: 35, duration: '40 minutes', icon: '💎', popular: true },
-    { name: 'Organic Express Pedi', price: 34, duration: '35-45 minutes', icon: '🦶', popular: false },
-    { name: 'Hard Gel Full Set', price: 85, duration: '100-120 minutes', icon: '⭐', popular: true },
+    { name: 'Classic Manicure', price: 19, duration: '25 minutes', icon: '💅', popular: false, from: false },
+    { name: 'Spa Manicure', price: 30, duration: '35 minutes', icon: '✨', popular: true, from: false },
+    { name: 'Aloe Vera Manicure', price: 48, duration: '45 minutes', icon: '🌿', popular: false, from: false },
+    { name: 'Gel Manicure', price: 35, duration: '40 minutes', icon: '💎', popular: true, from: false },
+    { name: 'Organic Express Pedi', price: 34, duration: '35-45 minutes', icon: '🦶', popular: false, from: false },
+    { name: 'Hard Gel Full Set', price: 85, duration: '100-120 minutes', icon: '⭐', popular: true, from: true },
   ]
 
   const pricingRight = [
-    { name: 'Nail Art', price: 11, duration: '15 minutes', icon: '🎨', popular: false },
-    { name: 'French Polish', price: 16, duration: '20 minutes', icon: '🤍', popular: false },
+    { name: 'Nail Art', price: 11, duration: '15 minutes', icon: '🎨', popular: false, from: false },
+    { name: 'French Polish', price: 16, duration: '20 minutes', icon: '🤍', popular: false, from: false },
     { name: 'Paraffin Mask', price: 18, duration: '20 minutes', from: true, icon: '💆', popular: false },
     { name: 'Gel Applications', price: 24, duration: '15 minutes', from: true, icon: '💫', popular: true },
-    { name: 'Gel Polish Removal', price: 14, duration: '25 minutes', icon: '🧴', popular: false },
-    { name: 'Callus Treatment', price: 19, duration: '30 minutes', icon: '🩹', popular: false },
+    { name: 'Gel Polish Removal', price: 14, duration: '25 minutes', icon: '🧴', popular: false, from: false },
+    { name: 'Callus Treatment', price: 19, duration: '30 minutes', icon: '🩹', popular: false, from: false },
   ]
 
   return (
