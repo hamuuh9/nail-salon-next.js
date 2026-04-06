@@ -28,7 +28,7 @@ export default function Header() {
       className={`fixed top-0 left-0 w-full z-[999] transition-all duration-500 font-sans ${
         isScrolled || isMobileMenuOpen
           ? 'bg-white shadow-[0_10px_30px_rgba(62,47,47,0.05)] py-4'
-          : 'bg-transparent py-6'
+          : 'bg-white/95 backdrop-blur-sm border-b border-gray-100 py-4 md:py-5'
       }`}
     >
       <div className="container mx-auto px-6 flex items-center justify-between">
@@ -37,9 +37,7 @@ export default function Header() {
           <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-theme to-[#b88c8c] flex items-center justify-center text-white font-bold text-xl shadow-lg shadow-theme/30 group-hover:scale-105 transition-transform">
             N
           </div>
-          <div className={`text-xl font-semibold tracking-tight transition-colors ${
-            isScrolled || isMobileMenuOpen ? 'text-[#3e2f2f]' : 'text-[#3e2f2f] md:text-white'
-          }`}>
+          <div className="text-xl font-semibold tracking-tight text-[#3e2f2f]">
             {siteConfig.salonName}
           </div>
         </a>
@@ -59,9 +57,9 @@ export default function Header() {
         </button>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex gap-8 items-center bg-white/10 backdrop-blur-md px-6 py-2.5 rounded-full border border-white/20">
+        <nav className="hidden md:flex gap-8 items-center">
           {navItems.map((item) => (
-            <a key={item.name} href={item.href} className={`text-sm font-medium tracking-wide transition-colors ${isScrolled ? 'text-[#6d5b5b] hover:text-[#3e2f2f]' : 'text-white/90 hover:text-white'}`}>
+            <a key={item.name} href={item.href} className="text-sm font-medium tracking-wide text-gray-700 hover:text-theme transition-colors">
               {item.name}
             </a>
           ))}
@@ -73,7 +71,6 @@ export default function Header() {
         className={`md:hidden fixed inset-0 top-0 bg-white pt-24 transition-all duration-500 ease-in-out ${
           isMobileMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
         }`}
-        style={{ zIndex: -1 }}
       >
         <nav className="flex flex-col h-full px-6 pb-32">
           <div className="flex flex-col gap-6 flex-1 mt-8">

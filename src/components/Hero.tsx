@@ -34,7 +34,7 @@ export default function Hero() {
 
       {/* Content Container */}
       <div className="container relative mx-auto px-6 h-full flex flex-col justify-end md:justify-center pb-32 md:pb-0 z-10 pt-24">
-        <div className="max-w-2xl bg-black/20 backdrop-blur-sm md:bg-transparent md:backdrop-blur-none p-6 md:p-0 rounded-2xl md:rounded-none md:border-l-4 md:border-theme md:pl-8">
+        <div className="max-w-2xl md:border-l-4 md:border-theme md:pl-8">
           <div className="inline-flex items-center gap-3 mb-4 animate-fade-in" style={{ animationFillMode: 'both', animationDelay: '0.2s' }}>
             <span className="w-8 h-[1px] bg-theme md:hidden" />
             <span className="text-sm font-semibold tracking-[0.2em] text-theme uppercase">
@@ -54,19 +54,9 @@ export default function Hero() {
             {/* CTA Book Appointment */}
             <a 
               href="#booking" 
-              className="inline-flex items-center justify-center px-8 py-4 bg-theme text-white rounded-full text-lg font-medium shadow-[0_8px_30px_rgba(212,165,165,0.4)] hover:shadow-[0_8px_30px_rgba(212,165,165,0.6)] hover:-translate-y-1 active:translate-y-0 transition-all text-center"
+              className="hidden md:inline-flex items-center justify-center px-8 py-4 bg-theme text-white rounded-full text-lg font-medium shadow-[0_8px_30px_rgba(212,165,165,0.4)] hover:shadow-[0_8px_30px_rgba(212,165,165,0.6)] hover:-translate-y-1 active:translate-y-0 transition-all text-center"
             >
               Book Appointment
-            </a>
-            {/* Secondary Link */}
-            <a 
-              href="#gallery" 
-              className="group inline-flex items-center justify-center gap-2 text-white/90 font-medium hover:text-white transition-colors py-4 px-2"
-            >
-              <span className="border-b border-white/30 group-hover:border-white transition-colors pb-1">
-                View Gallery
-              </span>
-              <span className="group-hover:translate-x-1 transition-transform hidden sm:inline-block">→</span>
             </a>
           </div>
         </div>

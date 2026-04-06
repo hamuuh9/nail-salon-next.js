@@ -148,18 +148,7 @@ export default function Services() {
                 className="w-full h-[500px] md:h-[600px] object-cover"
               />
               
-              {/* Floating Stats Card */}
-              <div className="absolute -bottom-8 -left-8 bg-white p-6 rounded-2xl shadow-xl">
-                <div className="flex items-center gap-4">
-                  <div className="w-14 h-14 bg-gradient-to-br from-theme to-theme-dark rounded-2xl flex items-center justify-center text-white text-2xl font-bold">
-                    8K+
-                  </div>
-                  <div>
-                    <div className="font-bold text-xl text-gray-900">Satisfied Clients</div>
-                    <div className="text-gray-500 text-sm">And counting every day</div>
-                  </div>
-                </div>
-              </div>
+
 
               {/* Floating Badge */}
               <div className="absolute top-6 right-6 bg-white/90 backdrop-blur-md px-4 py-2 rounded-full shadow-lg">

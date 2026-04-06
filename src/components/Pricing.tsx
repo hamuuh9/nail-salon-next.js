@@ -219,21 +219,7 @@ export default function Pricing() {
           </div>
         </div>
 
-        {/* CTA */}
-        <div className={`text-center mt-12 transition-all duration-1000 delay-800 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <p className="text-gray-600 mb-4 text-lg">
-            Make gorgeous nails a part of your life.
-          </p>
-          <a 
-            href="#booking" 
-            className="inline-flex items-center gap-2 text-theme font-semibold text-lg hover:underline"
-          >
-            Explore Full Salon Menu
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clipRule="evenodd" />
-            </svg>
-          </a>
-        </div>
+
       </div>
     </section>
   )

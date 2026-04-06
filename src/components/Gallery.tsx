@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
@@ -112,6 +113,11 @@ export default function Gallery() {
     }
   }
 
+  const swipeConfidenceThreshold = 10000;
+  const swipePower = (offset: number, velocity: number) => {
+    return Math.abs(offset) * velocity;
+  };
+
   return (
     <section id="gallery" ref={sectionRef} className="relative py-24 md:py-32 overflow-hidden">
       {/* Background */}
@@ -141,7 +147,10 @@ export default function Gallery() {
           {categories.map((category) => (
             <button
               key={category.id}
-              onClick={() => setFilter(category.id)}
+              onClick={() => {
+                setFilter(category.id);
+                // Reset animation logic can go here if needed
+              }}
               className={`px-6 py-2 rounded-full font-medium transition-all duration-300 ${
                 filter === category.id
                   ? 'bg-theme text-white shadow-lg shadow-theme/30 scale-105'
@@ -203,91 +212,113 @@ export default function Gallery() {
           ))}
         </div>
 
-        {/* Load More Button */}
-        <div className={`text-center mt-12 transition-all duration-1000 delay-600 ${isVisible ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-10'}`}>
-          <button className="group relative px-8 py-4 bg-theme text-white rounded-full font-semibold overflow-hidden transition-all duration-300 hover:shadow-2xl hover:shadow-theme/30">
-            <span className="relative z-10">View Full Gallery</span>
-            <div className="absolute inset-0 bg-theme-hover transform scale-x-0 group-hover:scale-x-100 transition-transform origin-left" />
-          </button>
-        </div>
+
       </div>
 
-      {/* Lightbox */}
-      {selectedImage !== null && (
-        <div 
-          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4"
-          onClick={closeLightbox}
-        >
-          {/* Close Button */}
-          <button 
-            className="absolute top-6 right-6 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors"
+      {/* Modern Lightbox with Swipe Gestures */}
+      <AnimatePresence>
+        {selectedImage !== null && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[1000] bg-black/95 flex items-center justify-center p-4 md:p-12 touch-none"
             onClick={closeLightbox}
           >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-            </svg>
-          </button>
+            {/* Close Button - Safely Positioned */}
+            <button 
+              className="absolute top-6 right-6 md:top-8 md:right-8 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors z-[1010]"
+              onClick={closeLightbox}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
 
-          {/* Previous Button */}
-          <button 
-            className="absolute left-6 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors"
-            onClick={(e) => { e.stopPropagation(); navigateLightbox('prev'); }}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-            </svg>
-          </button>
+            {/* Previous Button - Hidden on Mobile */}
+            <button 
+              className="absolute left-6 w-14 h-14 bg-white/10 hover:bg-white/20 rounded-full items-center justify-center text-white transition-colors z-[1010] hidden md:flex"
+              onClick={(e) => { e.stopPropagation(); navigateLightbox('prev'); }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+              </svg>
+            </button>
 
-          {/* Next Button */}
-          <button 
-            className="absolute right-6 w-12 h-12 bg-white/10 hover:bg-white/20 rounded-full flex items-center justify-center text-white transition-colors"
-            onClick={(e) => { e.stopPropagation(); navigateLightbox('next'); }}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
+            {/* Next Button - Hidden on Mobile */}
+            <button 
+              className="absolute right-6 w-14 h-14 bg-white/10 hover:bg-white/20 rounded-full items-center justify-center text-white transition-colors z-[1010] hidden md:flex"
+              onClick={(e) => { e.stopPropagation(); navigateLightbox('next'); }}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+              </svg>
+            </button>
 
-          {/* Image */}
-          <div 
-            className="relative max-w-6xl w-full max-h-[90vh] animate-fade-in"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <img
-              src={filteredImages[selectedImage].src}
-              alt={filteredImages[selectedImage].alt}
-              className="w-full h-full object-contain rounded-2xl"
-            />
-            
-            {/* Image Info */}
-            <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent rounded-b-2xl">
-              <div className="flex items-center justify-between text-white">
-                <div>
-                  <h3 className="text-2xl font-bold">{filteredImages[selectedImage].title}</h3>
-                  <p className="text-white/70">{filteredImages[selectedImage].alt}</p>
-                </div>
-                <div className="flex gap-2">
-                  <button className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
-                    </svg>
-                  </button>
-                  <button className="w-10 h-10 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center transition-colors">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z" clipRule="evenodd" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
+            {/* Animating Image Container */}
+            <motion.div 
+              className="relative max-w-6xl w-full h-full flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <AnimatePresence mode="wait">
+                <motion.div
+                  key={selectedImage}
+                  initial={{ x: 100, opacity: 0 }}
+                  animate={{ x: 0, opacity: 1 }}
+                  exit={{ x: -100, opacity: 0 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  className="relative w-full h-[80vh] md:h-[90vh] flex items-center justify-center cursor-grab active:cursor-grabbing"
+                  drag="x"
+                  dragConstraints={{ left: 0, right: 0 }}
+                  dragElastic={1}
+                  onDragEnd={(e, { offset, velocity }) => {
+                    const swipe = swipePower(offset.x, velocity.x);
+
+                    if (swipe < -swipeConfidenceThreshold) {
+                      navigateLightbox('next');
+                    } else if (swipe > swipeConfidenceThreshold) {
+                      navigateLightbox('prev');
+                    }
+                  }}
+                >
+                  <img
+                    src={filteredImages[selectedImage].src}
+                    alt={filteredImages[selectedImage].alt}
+                    className="w-full h-full object-contain rounded-2xl pointer-events-none select-none"
+                  />
+                  
+                  {/* Image Info Overlay */}
+                  <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent rounded-b-2xl pointer-events-none">
+                    <div className="flex flex-col md:flex-row items-start md:items-center justify-between text-white gap-4">
+                      <div>
+                        <h3 className="text-2xl font-bold">{filteredImages[selectedImage].title}</h3>
+                        <p className="text-white/70 text-sm">{filteredImages[selectedImage].alt}</p>
+                      </div>
+                      <div className="hidden md:flex gap-2">
+                        <button className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center pointer-events-auto">
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+              </AnimatePresence>
+            </motion.div>
 
             {/* Counter */}
-            <div className="absolute top-6 left-6 px-4 py-2 bg-black/50 backdrop-blur-sm rounded-full text-white text-sm">
+            <div className="absolute top-6 left-6 md:top-8 md:left-8 px-4 py-2 bg-black/50 backdrop-blur-sm rounded-full text-white text-sm font-medium tracking-widest z-[1010]">
               {selectedImage + 1} / {filteredImages.length}
             </div>
-          </div>
-        </div>
-      )}
+
+            {/* Mobile swipe helper text */}
+            <div className="absolute bottom-8 text-white/50 text-xs tracking-widest uppercase md:hidden pointer-events-none animate-pulse">
+              Swipe to explore
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }
