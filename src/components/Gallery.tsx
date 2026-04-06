@@ -60,7 +60,7 @@ export default function Gallery() {
       title: 'Spa Pedicure'
     },
     {
-      src: 'https://images.unsplash.com/photo-1599351431202-1e0f0137899a?auto=format&fit=crop&w=800&q=80',
+      src: 'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?auto=format&fit=crop&w=800&q=80',
       alt: 'Intricate nail art with gems',
       category: 'nail-art',
       title: 'Glamorous Gems'

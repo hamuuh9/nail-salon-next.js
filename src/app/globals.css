@@ -36,15 +36,7 @@ body {
   overflow-x: hidden;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Brawler', cursive;
-  font-weight: 700;
-  line-height: 1.2;
-}
 
-.font-display {
-  font-family: 'Marcellus', serif;
-}
 
 /* Theme colors */
 .text-theme {

@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import { siteConfig } from '../siteConfig'
 
 export default function Footer() {
   const [email, setEmail] = useState('')
@@ -75,7 +76,7 @@ export default function Footer() {
               <div className="w-12 h-12 bg-gradient-to-br from-theme to-theme-dark rounded-2xl flex items-center justify-center text-white text-2xl font-bold">
                 N
               </div>
-              <h3 className="text-2xl font-bold">Nail Salon</h3>
+              <h3 className="text-2xl font-bold">{siteConfig.salonName}</h3>
             </div>
             <p className="text-gray-400 mb-6 leading-relaxed">
               We provide premium nail care services in a relaxing atmosphere. Our skilled technicians 
@@ -168,8 +169,8 @@ export default function Footer() {
                   </svg>
                 </div>
                 <span className="leading-relaxed">
-                  123 Beauty Street<br />
-                  New York, NY 10001
+                  {siteConfig.address.street}<br />
+                  {siteConfig.address.city}, {siteConfig.address.state} {siteConfig.address.zip}
                 </span>
               </li>
               <li className="flex items-center gap-3">
@@ -178,8 +179,8 @@ export default function Footer() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
                   </svg>
                 </div>
-                <a href="tel:+1234567890" className="hover:text-theme transition-colors">
-                  (123) 456-7890
+                <a href={`tel:${siteConfig.phoneLink}`} className="hover:text-theme transition-colors">
+                  {siteConfig.phoneNumber}
                 </a>
               </li>
               <li className="flex items-center gap-3">
@@ -188,8 +189,8 @@ export default function Footer() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
                   </svg>
                 </div>
-                <a href="mailto:info@nailsalon.com" className="hover:text-theme transition-colors">
-                  info@nailsalon.com
+                <a href={`mailto:${siteConfig.email}`} className="hover:text-theme transition-colors">
+                  {siteConfig.email}
                 </a>
               </li>
             </ul>
@@ -209,7 +210,7 @@ export default function Footer() {
         <div className="border-t border-gray-800 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center gap-4">
             <div className="flex items-center gap-2 text-gray-400 text-sm">
-              <span>© {new Date().getFullYear()} Nail Salon.</span>
+              <span>© {new Date().getFullYear()} {siteConfig.salonName}.</span>
               <span>All rights reserved.</span>
             </div>
             <div className="flex flex-wrap justify-center gap-6 text-sm">

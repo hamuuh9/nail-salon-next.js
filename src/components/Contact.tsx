@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef } from 'react'
+import { siteConfig } from '../siteConfig'
 
 export default function Contact() {
   const [isVisible, setIsVisible] = useState(false)
@@ -162,9 +163,9 @@ export default function Contact() {
                 <div>
                   <h4 className="font-bold text-lg mb-1 group-hover:text-theme transition-colors">Visit Us</h4>
                   <p className="text-gray-600">
-                    123 Beauty Street<br />
-                    New York, NY 10001<br />
-                    United States
+                    {siteConfig.address.street}<br />
+                    {siteConfig.address.city}, {siteConfig.address.state} {siteConfig.address.zip}<br />
+                    {siteConfig.address.country}
                   </p>
                   <a href="#" className="inline-flex items-center gap-1 text-theme text-sm font-medium mt-2 hover:underline">
                     Get Directions
@@ -184,8 +185,8 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-bold text-lg mb-1 group-hover:text-theme transition-colors">Call Us</h4>
-                  <a href="tel:+1234567890" className="text-xl font-semibold text-theme hover:underline">
-                    (123) 456-7890
+                  <a href={`tel:${siteConfig.phoneLink}`} className="text-xl font-semibold text-theme hover:underline">
+                    {siteConfig.phoneNumber}
                   </a>
                   <p className="text-gray-500 text-sm mt-1">Mon-Sat: 9:00 AM - 7:00 PM</p>
                 </div>
@@ -200,12 +201,12 @@ export default function Contact() {
                 </div>
                 <div>
                   <h4 className="font-bold text-lg mb-1 group-hover:text-theme transition-colors">Email Us</h4>
-                  <a href="mailto:info@nailsalon.com" className="text-theme hover:underline">
-                    info@nailsalon.com
+                  <a href={`mailto:${siteConfig.email}`} className="text-theme hover:underline">
+                    {siteConfig.email}
                   </a>
                   <br />
-                  <a href="mailto:booking@nailsalon.com" className="text-theme hover:underline text-sm">
-                    booking@nailsalon.com
+                  <a href={`mailto:${siteConfig.bookingEmail}`} className="text-theme hover:underline text-sm">
+                    {siteConfig.bookingEmail}
                   </a>
                 </div>
               </div>
@@ -290,8 +291,8 @@ export default function Contact() {
                   </svg>
                 </div>
                 <div>
-                  <h4 className="font-bold text-lg">Nail Salon</h4>
-                  <p className="text-gray-500 text-sm">123 Beauty Street, NY</p>
+                  <h4 className="font-bold text-lg">{siteConfig.salonName}</h4>
+                  <p className="text-gray-500 text-sm">{siteConfig.address.short}</p>
                 </div>
               </div>
               <a 

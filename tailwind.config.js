@@ -17,9 +17,10 @@ module.exports = {
         'theme-sienna': '#a0522d',
       },
       fontFamily: {
-        'heading': ['Brawler', 'cursive'],
-        'body': ['Inter', 'sans-serif'],
-        'display': ['Marcellus', 'serif'],
+        'sans': ['var(--font-inter)', 'sans-serif'],
+        'heading': ['var(--font-inter)', 'sans-serif'],
+        'body': ['var(--font-inter)', 'sans-serif'],
+        'display': ['var(--font-inter)', 'sans-serif'],
       },
       animation: {
         'fade-in': 'fadeIn 0.5s ease-in-out',
