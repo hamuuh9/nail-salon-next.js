@@ -49,7 +49,7 @@ export default function About() {
 
   return (
     <section 
-      id="about" 
+      id="services" 
       ref={sectionRef}
       className="relative py-24 md:py-32 overflow-hidden"
     >

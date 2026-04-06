@@ -67,7 +67,7 @@ export default function Services() {
   ]
 
   return (
-    <section id="services" ref={sectionRef} className="relative py-24 md:py-32 overflow-hidden">
+    <section id="about" ref={sectionRef} className="relative py-24 md:py-32 overflow-hidden">
       {/* Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-gray-50 via-white to-theme-light/30" />
       

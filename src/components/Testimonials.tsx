@@ -135,7 +135,7 @@ export default function Testimonials() {
 
             <div className="bg-white rounded-3xl p-8 md:p-12 shadow-2xl shadow-theme/10 relative overflow-hidden">
               {/* Background Pattern */}
-              <div className="absolute inset-0 opacity-5">
+              <div className="absolute inset-0 opacity-5 pointer-events-none z-0">
                 <div className="absolute inset-0" style={{
                   backgroundImage: 'radial-gradient(circle at 2px 2px, rgba(212, 165, 165, 0.3) 1px, transparent 0)',
                   backgroundSize: '30px 30px'
@@ -208,7 +208,7 @@ export default function Testimonials() {
                 </div>
 
                 {/* Navigation Buttons */}
-                <div className="flex gap-3">
+                <div className="flex gap-3 relative z-20">
                   <button
                     onClick={prevTestimonial}
                     className="w-12 h-12 flex items-center justify-center rounded-full border-2 border-gray-200 text-gray-600 hover:border-theme hover:bg-theme hover:text-white transition-all duration-300"
